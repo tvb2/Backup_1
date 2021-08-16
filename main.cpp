@@ -9,6 +9,7 @@
 #include "TimeRelayFuncB.h"
 #include "Relay.h"
 #include "SizeStruct.h"
+#include "userdata.h"
 #include "backupeval.h"
 #include <vector>
 
@@ -53,9 +54,6 @@ QVector<double>dbltime;
 bool m3150{1};
 bool postlube{0};//POSTLUBE
 bool ps3200{0};//Header switch
-extern bool controllerActive;
-extern bool fireDetected;
-extern int timer_main_sec;//Total poslube
 int timer_program_total{0};//10% more than Total Postlube
 
 int main(int argc, char *argv[])
@@ -68,7 +66,7 @@ int main(int argc, char *argv[])
 //Backup Post lube continuous
       kt0141.timeSet=3600;           //1 hour
 //Total postlube
-      kt0142.timeSet=timer_main_sec; //defined by user
+      kt0142.timeSet=UserData::timer_main_sec; //defined by user
 //Backup Post Lube ON cycle
       kt0143.timeSet=0.85*3*60;      //153 seconds (0.85 of 3 minutes range)
 //Fire detected rolldown lube
@@ -76,11 +74,11 @@ int main(int argc, char *argv[])
 //Header pressure high Backup pump off
       kt0144.timeSet=1;              //1 second
 //Controller active
-      ka0131.enable=controllerActive;
+      ka0131.enable=UserData::controllerActive;
 //Controller active
       ka0141.enable=1;
 //Controller active
-      ka0132.enable=controllerActive;
+      ka0132.enable=UserData::controllerActive;
 //Post lube not required
       ka0133.enable=0;
 //Backup command off
@@ -94,7 +92,7 @@ int main(int argc, char *argv[])
 //Backup lube oil pump off
       ka0138.enable=1;
 //No fire detected
-      ka0244.enable=!fireDetected;//reverse logic when KA0244 is Enabled, there is no fire detected
+      ka0244.enable=!(UserData::fireDetected);//reverse logic when KA0244 is Enabled, there is no fire detected
 
     BackupEval();
      return app.exec();

@@ -3,6 +3,7 @@
 #include <TimeRelayFuncA.h>
 #include <TimeRelayFuncB.h>
 #include <Relay.h>
+#include "userdata.h"
 
 /*Defined in main.cpp*/
 extern ResultsData Skt0140;           //Backup Post Lube OFF cycle
@@ -64,7 +65,7 @@ void PlotWindow::on_pltBtn_clicked()
     ui->pltBUpumpRun->xAxis->setLabel("time");
     ui->pltBUpumpRun->yAxis->setLabel("Backup pump status");
     // set axes ranges, so we see all data:
-    ui->pltBUpumpRun->xAxis->setRange(0, timer_main_sec*1.1);
+    ui->pltBUpumpRun->xAxis->setRange(0, UserData::timer_main_sec*1.1);
     ui->pltBUpumpRun->yAxis->setRange(0, 2);
     ui->pltBUpumpRun->replot();
 }

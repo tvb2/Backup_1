@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "plotwindow.h"
+#include "userdata.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

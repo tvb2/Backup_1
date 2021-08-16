@@ -5,9 +5,9 @@
 class UserData
 {
 public:
-    UserData();
-    int timer_main_sec{0};
-    bool controllerActive{0}, fireDetected{0};
+    static int timer_main_sec;
+    static bool controllerActive;
+    static bool fireDetected;
 };
 
 #endif // USERDATA_H
