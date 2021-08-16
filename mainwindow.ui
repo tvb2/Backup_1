@@ -11,21 +11,90 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Backup system simulation</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="btnCalculate">
     <property name="geometry">
      <rect>
-      <x>270</x>
-      <y>120</y>
+      <x>700</x>
+      <y>520</y>
       <width>89</width>
       <height>25</height>
      </rect>
     </property>
     <property name="text">
-     <string>PushButton</string>
+     <string>Calculate!</string>
     </property>
+   </widget>
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>0</y>
+      <width>585</width>
+      <height>60</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <layout class="QHBoxLayout" name="TotalPostlubeTime">
+       <item>
+        <widget class="QLabel" name="lblTotalPostlubeTime">
+         <property name="text">
+          <string>Total postlube time:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="totalPostlubeHours">
+         <property name="text">
+          <string>0</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="lblHoursAnd">
+         <property name="text">
+          <string>hour(s) and </string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="totalPostlubeMinutes">
+         <property name="text">
+          <string>0</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="lblMinutes">
+         <property name="text">
+          <string>minutes</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="ControllerActiveSelect">
+       <item>
+        <widget class="QCheckBox" name="ckBxFireDetected">
+         <property name="text">
+          <string>Fire detected</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="ckBxControllerActive">
+         <property name="text">
+          <string>Controller Active</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

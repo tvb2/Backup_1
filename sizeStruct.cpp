@@ -9,4 +9,8 @@ Structure.elapsed.resize(StructSize);
 Structure.NC.resize(StructSize);
 Structure.NO.resize(StructSize);
 Structure.switchStatus.resize(StructSize);
+Structure.dblEnable.resize(StructSize);
+Structure.dblNC.resize(StructSize);
+Structure.dblNO.resize(StructSize);
+Structure.dblelapsed.resize(StructSize);
 }

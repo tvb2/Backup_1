@@ -1,6 +1,6 @@
 QT       += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 
 CONFIG += c++11
 
@@ -12,9 +12,13 @@ SOURCES += \
     Relay.cpp \
     TimeRelayFuncA.cpp \
     TimeRelayFuncB.cpp \
+    backupeval.cpp \
     main.cpp \
     mainwindow.cpp \
-    sizeStruct.cpp
+    plotwindow.cpp \
+    qcustomplot.cpp \
+    sizeStruct.cpp \
+    userdata.cpp
 
 HEADERS += \
     Declarations.h \
@@ -22,10 +26,15 @@ HEADERS += \
     SizeStruct.h \
     TimeRelayFuncA.h \
     TimeRelayFuncB.h \
-    mainwindow.h
+    backupeval.h \
+    mainwindow.h \
+    plotwindow.h \
+    qcustomplot.h \
+    userdata.h
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    plotwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
