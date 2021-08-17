@@ -1,5 +1,17 @@
 #include "TimeRelayFuncB.h"
- bool TimeRelayFuncB::ckIfDN()
+TimeRelayFuncB::TimeRelayFuncB()
+{
+    trigger=0;
+    timeSet=0;
+    elapsed=0;
+    enable=0;
+    switchON=0;
+    status=0;
+    NO=0;
+    NC=0;//1 active, 0 not active
+
+}
+bool TimeRelayFuncB::ckIfDN()
   {
     if (enable)
     {

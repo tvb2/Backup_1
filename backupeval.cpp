@@ -5,7 +5,7 @@
 #include "SizeStruct.h"
 #include <Relay.h>
 
-/*Defined in main.cpp*/
+/*Defined in mainwindow.cpp*/
 extern ResultsData Skt0140;           //Backup Post Lube OFF cycle
 extern ResultsData Skt0141;           //Backup Posl lube continuous
 extern ResultsData Skt0142;           //Total postlube

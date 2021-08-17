@@ -2,7 +2,8 @@
 #define RELAY_H
 class Relay{
   public:
-  bool enable{true}, statusNO{false},statusNC{true};
+  Relay();
+  bool enable, statusNO,statusNC;
 
   bool contactsNO();
 

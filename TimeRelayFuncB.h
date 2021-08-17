@@ -1,11 +1,12 @@
 #ifndef TIMERELAYFUNCB_H_
 #define TIMERELAYFUNCB_H_
 class TimeRelayFuncB{
-  bool trigger{false};
+  bool trigger;
   public:
-  int timeSet{0},
-      elapsed{0};
-  bool enable{false},switchON{false},status{false},NO{false},NC{true};
+  TimeRelayFuncB();
+  int timeSet,
+      elapsed;
+  bool enable,switchON,status,NO,NC;
   bool ckIfDN();
   bool contactsNO();
   bool contactsNC();

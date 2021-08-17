@@ -2,9 +2,10 @@
 #define TIMERELAYFUNCA_H_
 class TimeRelayFuncA{
   public:
-  int timeSet{0},
-      elapsed{0};
-  bool enable{false},status{false},NO{false},NC{true};//1 active, 0 not active
+  TimeRelayFuncA();
+  int timeSet,
+      elapsed;
+  bool enable,status,NO,NC;//1 active, 0 not active
 
   bool ckIfDN();
   bool contactsNO();
