@@ -58,15 +58,41 @@ PlotWindow::~PlotWindow()
 
 void PlotWindow::on_pltBtn_clicked()
 {
-
+/*Backup pump Run plot*/
     ui->pltBUpumpRun->addGraph();
-    //ui->pltBUpumpRun->setData(time,result.enable);
     ui->pltBUpumpRun->graph(0)->setData(dbltime, Ska0138.dblEnable);
     ui->pltBUpumpRun->xAxis->setLabel("time");
-    ui->pltBUpumpRun->yAxis->setLabel("Backup pump status");
+    ui->pltBUpumpRun->yAxis->setLabel("Backup \n pump");
     // set axes ranges, so we see all data:
     ui->pltBUpumpRun->xAxis->setRange(0, UserData::timer_main_sec*1.1);
     ui->pltBUpumpRun->yAxis->setRange(0, 2);
     ui->pltBUpumpRun->replot();
+/*PRE/POST pump Run plot*/
+    ui->pltACpumpRun->addGraph();
+    ui->pltACpumpRun->graph(0)->setData(dbltime, Ska0135.dblEnable);
+    ui->pltACpumpRun->xAxis->setLabel("time");
+    ui->pltACpumpRun->yAxis->setLabel("AC \n pump");
+    // set axes ranges, so we see all data:
+    ui->pltACpumpRun->xAxis->setRange(0, UserData::timer_main_sec*1.1);
+    ui->pltACpumpRun->yAxis->setRange(0, 2);
+    ui->pltACpumpRun->replot();
+/*Header Pressure High plot*/
+    ui->pltHeaderPressureHi->addGraph();
+    ui->pltHeaderPressureHi->graph(0)->setData(dbltime, Ska0136.dblEnable);
+    ui->pltHeaderPressureHi->xAxis->setLabel("time");
+    ui->pltHeaderPressureHi->yAxis->setLabel("Header \n pressure");
+    // set axes ranges, so we see all data:
+    ui->pltHeaderPressureHi->xAxis->setRange(0, UserData::timer_main_sec*1.1);
+    ui->pltHeaderPressureHi->yAxis->setRange(0, 2);
+    ui->pltHeaderPressureHi->replot();
+/*Fire Detected*/
+    ui->pltFireDetected->addGraph();
+    ui->pltFireDetected->graph(0)->setData(dbltime, Ska0244.dblEnable);
+    ui->pltFireDetected->xAxis->setLabel("time");
+    ui->pltFireDetected->yAxis->setLabel("No fire \n detected");
+    // set axes ranges, so we see all data:
+    ui->pltFireDetected->xAxis->setRange(0, UserData::timer_main_sec*1.1);
+    ui->pltFireDetected->yAxis->setRange(0, 2);
+    ui->pltFireDetected->replot();
 }
 

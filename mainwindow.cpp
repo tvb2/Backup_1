@@ -47,9 +47,32 @@ Relay ka0244;               //No fire detected
 QVector<double>dbltime;
 
 bool m3150{1};
-bool postlube{0};//POSTLUBE
+bool postlube{1};//POSTLUBE
 bool ps3200{0};//Header switch
 int timer_program_total{0};//10% more than Total Postlube
+int time1Fire{0}, time1HeadPress{0};
+int time2Fire{50000}, time2HeadPress{50000};
+
+
+/*function to re-initialize class objects for new calculation*/
+void initialize(){
+    kt0140=TimeRelayFuncA();           //Backup Post Lube OFF cycle
+    kt0141=TimeRelayFuncA();           //Backup Posl lube continuous
+    kt0142=TimeRelayFuncA();           //Total postlube
+    kt0143=TimeRelayFuncA();           //Backup Post Lube ON cycle
+    kt0145=TimeRelayFuncA();           //Fire detected rolldown lube
+    kt0144=TimeRelayFuncB();           //Header pressure high Backup pump off
+    ka0131=Relay();                   //Controller active
+    ka0141=Relay();                   //Controller active
+    ka0132=Relay();                   //Controller active
+    ka0133=Relay();                   //Post lube not required
+    ka0134=Relay();                   //Backup command off
+    ka0135=Relay();               //AC PRE/POST pump drive
+    ka0136=Relay();               //Lube oil header pressure high
+    ka0137=Relay();               //Lube pump inhibit
+    ka0138=Relay();               //Backup lube oil pump off
+    ka0244=Relay();               //No fire detected
+}
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -68,24 +91,18 @@ void MainWindow::on_btnCalculate_clicked()
     //Get user input and set total postlube time. Recalculate from hours and minutes into seconds
     UserData::timer_main_sec=3600*(ui->totalPostlubeHours->text().toInt())+60*(ui->totalPostlubeMinutes->text().toInt());
     UserData::fireDetected=ui->ckBxFireDetected->isChecked();
+    time1Fire=ui->time1Fire->text().toInt();
+    time2Fire=ui->time2Fire->text().toUInt();
+
     UserData::controllerActive=ui->ckBxControllerActive->isChecked();
+
+    UserData::ps3200=ui->ckBxHeaderLo->isChecked();//checked when header pressure is low
+    time1HeadPress=ui->time1Header->text().toInt();
+    time2HeadPress=ui->time2Header->text().toUInt();
+
     //Initialize class objects (needed for 2nd 3rd... calculation
-    kt0140=TimeRelayFuncA();           //Backup Post Lube OFF cycle
-    kt0141=TimeRelayFuncA();           //Backup Posl lube continuous
-    kt0142=TimeRelayFuncA();           //Total postlube
-    kt0143=TimeRelayFuncA();           //Backup Post Lube ON cycle
-    kt0145=TimeRelayFuncA();           //Fire detected rolldown lube
-    kt0144=TimeRelayFuncB();           //Header pressure high Backup pump off
-    ka0131=Relay();                   //Controller active
-    ka0141=Relay();                   //Controller active
-    ka0132=Relay();                   //Controller active
-    ka0133=Relay();                   //Post lube not required
-    ka0134=Relay();                   //Backup command off
-    ka0135=Relay();               //AC PRE/POST pump drive
-    ka0136=Relay();               //Lube oil header pressure high
-    ka0137=Relay();               //Lube pump inhibit
-    ka0138=Relay();               //Backup lube oil pump off
-    ka0244=Relay();               //No fire detected
+    initialize();
+
     //Backup Post Lube OFF cycle
           kt0140.timeSet=9.5*60;         //9.5 minutes
     //Backup Post lube continuous
@@ -118,8 +135,43 @@ void MainWindow::on_btnCalculate_clicked()
           ka0138.enable=1;
     //No fire detected
           ka0244.enable=!(UserData::fireDetected);//reverse logic when KA0244 is Enabled, there is no fire detected
+timer_program_total=static_cast<int>(kt0142.timeSet*1.1);//10% more than Total Postlube
 
-          BackupEval();
+          /*Resize structures to be of +10% the size of Total Postlube timer */
+              sizeStruct(Skt0140,timer_program_total);
+              sizeStruct(Skt0141,timer_program_total);
+              sizeStruct(Skt0142,timer_program_total);
+              sizeStruct(Skt0143,timer_program_total);
+              sizeStruct(Skt0144,timer_program_total);
+              sizeStruct(Skt0145,timer_program_total);
+              sizeStruct(Ska0131,timer_program_total);
+              sizeStruct(Ska0141,timer_program_total);
+              sizeStruct(Ska0132,timer_program_total);
+              sizeStruct(Ska0133,timer_program_total);
+              sizeStruct(Ska0134,timer_program_total);
+              sizeStruct(Ska0135,timer_program_total);
+              sizeStruct(Ska0136,timer_program_total);
+              sizeStruct(Ska0137,timer_program_total);
+              sizeStruct(Ska0138,timer_program_total);
+              sizeStruct(Ska0244,timer_program_total);
+              dbltime.resize(timer_program_total);
+
+for (int program_timer=0;program_timer<timer_program_total;++program_timer)
+{
+    if (UserData::fireDetected){
+        if (program_timer>=time1Fire && program_timer<time2Fire)
+            ka0244.enable=0;
+        else
+            ka0244.enable=1;
+    }
+    if (UserData::ps3200){
+        if (program_timer>=time1HeadPress && program_timer<time2HeadPress)
+                    ka0136.enable=0;
+                else
+                    ka0136.enable=1;
+    }else if (!UserData::ps3200) ka0136.enable=1;
+    BackupEval(program_timer);
+}
     plotWindow = new PlotWindow(this);
     plotWindow->show();
 }

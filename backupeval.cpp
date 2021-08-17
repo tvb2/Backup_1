@@ -49,29 +49,7 @@ extern bool controllerActive;
 extern int timer_main_sec;//Total poslube
 extern int timer_program_total;//10% more than Total Postlube
 
-void BackupEval()
-{
-    timer_program_total=static_cast<int>(kt0142.timeSet*1.1);//10% more than Total Postlube
-
-    /*Resize structures to be of +10% the size of Total Postlube timer */
-        sizeStruct(Skt0140,timer_program_total);
-        sizeStruct(Skt0141,timer_program_total);
-        sizeStruct(Skt0142,timer_program_total);
-        sizeStruct(Skt0143,timer_program_total);
-        sizeStruct(Skt0144,timer_program_total);
-        sizeStruct(Skt0145,timer_program_total);
-        sizeStruct(Ska0131,timer_program_total);
-        sizeStruct(Ska0141,timer_program_total);
-        sizeStruct(Ska0132,timer_program_total);
-        sizeStruct(Ska0133,timer_program_total);
-        sizeStruct(Ska0134,timer_program_total);
-        sizeStruct(Ska0135,timer_program_total);
-        sizeStruct(Ska0136,timer_program_total);
-        sizeStruct(Ska0137,timer_program_total);
-        sizeStruct(Ska0138,timer_program_total);
-        sizeStruct(Ska0244,timer_program_total);
-        dbltime.resize(timer_program_total);
-    for (int program_timer=0;program_timer<timer_program_total;++program_timer)
+void BackupEval(int program_timer)
 {
     //First branch KT0140, KT0141 and KT0142
     if (ka0132.contactsNC() || ka0133.contactsNC())
@@ -316,5 +294,4 @@ void BackupEval()
               Ska0244.dblEnable[program_timer]=ka0244.enable;
 
 dbltime[program_timer]=program_timer;
-    }
 }

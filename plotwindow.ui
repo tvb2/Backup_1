@@ -20,8 +20,14 @@
       <x>10</x>
       <y>10</y>
       <width>781</width>
-      <height>231</height>
+      <height>101</height>
      </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
     </property>
    </widget>
    <widget class="QPushButton" name="pltBtn">
@@ -35,6 +41,48 @@
     </property>
     <property name="text">
      <string>Plot!</string>
+    </property>
+   </widget>
+   <widget class="QCustomPlot" name="pltACpumpRun" native="true">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>100</y>
+      <width>781</width>
+      <height>101</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+   </widget>
+   <widget class="QCustomPlot" name="pltHeaderPressureHi" native="true">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>190</y>
+      <width>781</width>
+      <height>111</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+   </widget>
+   <widget class="QCustomPlot" name="pltFireDetected" native="true">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>310</y>
+      <width>781</width>
+      <height>101</height>
+     </rect>
     </property>
    </widget>
   </widget>
