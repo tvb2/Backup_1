@@ -66,6 +66,12 @@ void PlotWindow::on_pltBtn_clicked()
     // set axes ranges, so we see all data:
     ui->pltBUpumpRun->xAxis->setRange(0, UserData::timer_main_sec*1.1);
     ui->pltBUpumpRun->yAxis->setRange(0, 2);
+    ui->pltBUpumpRun->yAxis->ticker()->setTickCount(2);
+    // configure left axis text labels:
+    QSharedPointer<QCPAxisTickerText> textTickerPump(new QCPAxisTickerText);
+    textTickerPump->addTick(0, "RUN");
+    textTickerPump->addTick(1, "STOPPED");
+    ui->pltBUpumpRun->yAxis->setTicker(textTickerPump);
     ui->pltBUpumpRun->replot();
 /*PRE/POST pump Run plot*/
     ui->pltACpumpRun->addGraph();
@@ -75,6 +81,9 @@ void PlotWindow::on_pltBtn_clicked()
     // set axes ranges, so we see all data:
     ui->pltACpumpRun->xAxis->setRange(0, UserData::timer_main_sec*1.1);
     ui->pltACpumpRun->yAxis->setRange(0, 2);
+    ui->pltACpumpRun->yAxis->ticker()->setTickCount(2);
+    // configure left axis text labels:
+    ui->pltACpumpRun->yAxis->setTicker(textTickerPump);
     ui->pltACpumpRun->replot();
 /*Header Pressure High plot*/
     ui->pltHeaderPressureHi->addGraph();
@@ -84,6 +93,12 @@ void PlotWindow::on_pltBtn_clicked()
     // set axes ranges, so we see all data:
     ui->pltHeaderPressureHi->xAxis->setRange(0, UserData::timer_main_sec*1.1);
     ui->pltHeaderPressureHi->yAxis->setRange(0, 2);
+    ui->pltHeaderPressureHi->yAxis->ticker()->setTickCount(2);
+// configure left axis text labels:
+    QSharedPointer<QCPAxisTickerText> textTickerHead(new QCPAxisTickerText);
+    textTickerHead->addTick(0, "          LOW");
+    textTickerHead->addTick(1, "        HIGH");
+    ui->pltHeaderPressureHi->yAxis->setTicker(textTickerHead);
     ui->pltHeaderPressureHi->replot();
 /*Fire Detected*/
     ui->pltFireDetected->addGraph();
@@ -93,6 +108,12 @@ void PlotWindow::on_pltBtn_clicked()
     // set axes ranges, so we see all data:
     ui->pltFireDetected->xAxis->setRange(0, UserData::timer_main_sec*1.1);
     ui->pltFireDetected->yAxis->setRange(0, 2);
+    ui->pltFireDetected->yAxis->ticker()->setTickCount(2);
+    // configure left axis text labels:
+    QSharedPointer<QCPAxisTickerText> textTickerFire(new QCPAxisTickerText);
+    textTickerFire->addTick(0, "        FIRE");
+    textTickerFire->addTick(1, "   NO FIRE");
+    ui->pltFireDetected->yAxis->setTicker(textTickerFire);
     ui->pltFireDetected->replot();
 }
 
