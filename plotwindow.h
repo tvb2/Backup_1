@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "Declarations.h"
+#include <qcustomplot.h>
 
 namespace Ui {
 class PlotWindow;
@@ -18,9 +19,19 @@ public:
 
 private slots:
     void on_pltBtn_clicked();
+    void slotMousePress(QMouseEvent * event);
+    void slotMouseMove(QMouseEvent * event);
 
 private:
     Ui::PlotWindow *ui;
+    QCPCurve *verticalLineBUpump,
+    *verticalLineACpump,
+    *verticalLineHeader,
+    *verticalLineFire;
+    QCPItemTracer *tracerBUpump,
+    *tracerACpump,
+    *tracerHeaderPr,
+    *tracerFire;
 };
 
 #endif // PLOTWINDOW_H
