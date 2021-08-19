@@ -194,10 +194,8 @@ void PlotWindow::slotMousePress(QMouseEvent *event)
     verticalLineHeader->setData(x, y); verticalLineFire->setData(x, y);
 
     // According to the X coordinate mouse clicks define the next position for the tracer
-    tracerBUpump->setGraphKey(coordX);
-    tracerACpump->setGraphKey(coordX);
-    tracerHeaderPr->setGraphKey(coordX);
-    tracerFire->setGraphKey(coordX);
+    tracerBUpump->setGraphKey(coordX); tracerACpump->setGraphKey(coordX);
+    tracerHeaderPr->setGraphKey(coordX); tracerFire->setGraphKey(coordX);
 
     // Output the coordinates of the point of the graph, where the router is setted in QLineEdit
     ui->lnBUpumpCoords->setText("x: " + QString::number(tracerBUpump->position->key()) +
