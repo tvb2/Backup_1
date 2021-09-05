@@ -4,6 +4,9 @@
 #include <TimeRelayFuncB.h>
 #include <Relay.h>
 #include "userdata.h"
+#include <QString>
+#include <string>
+
 
 /*Defined in main.cpp*/
 extern ResultsData Skt0140;           //Backup Post Lube OFF cycle
@@ -196,16 +199,21 @@ void PlotWindow::slotMousePress(QMouseEvent *event)
     // According to the X coordinate mouse clicks define the next position for the tracer
     tracerBUpump->setGraphKey(coordX); tracerACpump->setGraphKey(coordX);
     tracerHeaderPr->setGraphKey(coordX); tracerFire->setGraphKey(coordX);
+    QString BUstatus="N/A"; QString ACstatus="N/A"; QString Headstatus="N/A"; QString Firestatus="N/A";
+    tracerBUpump->position->value()==1?BUstatus="STOPPED":BUstatus="RUNNING";
+    tracerACpump->position->value()==1?ACstatus="STOPPED":ACstatus="RUNNING";
+    tracerHeaderPr->position->value()==1?Headstatus="Pressure is high":Headstatus="Pressure is low";
+    tracerFire->position->value()==1?Firestatus="Fire not detected":Firestatus="Fire detected";
 
     // Output the coordinates of the point of the graph, where the router is setted in QLineEdit
-    ui->lnBUpumpCoords->setText("x: " + QString::number(tracerBUpump->position->key()) +
-                          " y: " + QString::number(tracerBUpump->position->value()));
-    ui->lnACpumpCoords->setText("x: " + QString::number(tracerBUpump->position->key()) +
-                          " y: " + QString::number(tracerACpump->position->value()));
-    ui->lnHeaderPrCoords->setText("x: " + QString::number(tracerBUpump->position->key()) +
-                          " y: " + QString::number(tracerHeaderPr->position->value()));
-    ui->lnFireCoords->setText("x: " + QString::number(tracerBUpump->position->key()) +
-                          " y: " + QString::number(tracerFire->position->value()));
+    ui->lnBUpumpCoords->setText("time (sec): " + QString::number(tracerBUpump->position->key()) +
+                          " status: " + BUstatus);
+    ui->lnACpumpCoords->setText("time (sec): " + QString::number(tracerBUpump->position->key()) +
+                          " status: " + ACstatus);
+    ui->lnHeaderPrCoords->setText("time (sec): " + QString::number(tracerBUpump->position->key()) +
+                          " status: " + Headstatus);
+    ui->lnFireCoords->setText("time (sec): " + QString::number(tracerBUpump->position->key()) +
+                          " status: " + Firestatus);
     /*replot*/
         ui->pltBUpumpRun->replot();
         ui->pltACpumpRun->replot();
