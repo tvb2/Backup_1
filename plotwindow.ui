@@ -26,6 +26,9 @@
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
+   <property name="focusPolicy">
+    <enum>Qt::ClickFocus</enum>
+   </property>
    <layout class="QGridLayout" name="gridLayout_2">
     <item row="0" column="0">
      <layout class="QGridLayout" name="gridLayout">
