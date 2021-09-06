@@ -40,7 +40,7 @@ private:
     *tracerFire;
     QShortcut *Left, *Right, *PgUp, *PgDown;
     double coordX{0};
-    void replot();
+    void replotAll();
 };
 
 #endif // PLOTWINDOW_H

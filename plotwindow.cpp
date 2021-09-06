@@ -48,6 +48,8 @@ PlotWindow::PlotWindow(QWidget *parent) :
     ui(new Ui::PlotWindow)
 {
     ui->setupUi(this);
+
+//Setup signals and slots to move tracer with keyboard arrows and Page Up/Down buttons
     Left = new QShortcut (this); Left->setKey(Qt::Key_Left);
     connect(Left, SIGNAL(activated()),this,SLOT(slotKeyPressedLeft()));
 
@@ -192,7 +194,53 @@ void PlotWindow::on_pltBtn_clicked()
 }
 /*Replot with new X coordinate. X coordinate will be defined in separate
  * function depending on mouse or keyboard input */
-void PlotWindow::replot()
+/*
+ Original function taken from https://evileg.com/en/post/94/
+ and modified as per my needs (see replot function for more details)
+*/
+void PlotWindow::slotMousePress(QMouseEvent *event)
+{    // Find X coordinate on the graph where the mouse being clicked
+
+    coordX = ui->pltBUpumpRun->xAxis->pixelToCoord(event->pos().x());
+    replotAll();
+    replotAll();//shit code, but otherwise plot will always lag one step
+}
+void PlotWindow::slotMouseMove(QMouseEvent *event)
+{
+    if(QApplication::mouseButtons()) slotMousePress(event);
+}
+
+/*Move tracer 1 point left or right on keyboard arrows press and 10 points on PgUp or PgDown buttons press*/
+void PlotWindow::slotKeyPressedLeft()
+{
+    coordX-=1;
+    replotAll();
+    replotAll();//shit code, but otherwise plot will always lag one step
+}
+
+/*Move tracer 1 point left or right on keyboard arrows press and 10 points on PgUp or PgDown buttons press*/
+void PlotWindow::slotKeyPressedRight()
+{
+    coordX +=1;
+    replotAll();
+    replotAll();//shit code, but otherwise plot will always lag one step
+}
+
+/*Move tracer 1 point left or right on keyboard arrows press and 10 points on PgUp or PgDown buttons press*/
+void PlotWindow::slotKeyPressedPgUp()
+{
+    coordX-=10;
+    replotAll();
+    replotAll();//shit code, but otherwise plot will always lag one step
+}
+/*Move tracer 1 point left or right on keyboard arrows press and 10 points on PgUp or PgDown buttons press*/
+void PlotWindow::slotKeyPressedPgDown()
+{
+    coordX+=10;
+    replotAll();
+    replotAll();//shit code, but otherwise plot will always lag one step
+}
+void PlotWindow::replotAll()
 {
     // Prepare the X axis coordinates on the vertical transfer linea
     QVector<double> x(2), y(2);
@@ -231,42 +279,6 @@ void PlotWindow::replot()
         ui->pltACpumpRun->replot();
         ui->pltHeaderPressureHi->replot();
         ui->pltFireDetected->replot();
-}
-/*
- Original function taken from https://evileg.com/en/post/94/
- and modified as per my needs
-*/
-void PlotWindow::slotMousePress(QMouseEvent *event)
-{    // Find X coordinate on the graph where the mouse being clicked
-    coordX = ui->pltBUpumpRun->xAxis->pixelToCoord(event->pos().x());
 
-    replot();
-}
-void PlotWindow::slotMouseMove(QMouseEvent *event)
-{
-    if(QApplication::mouseButtons()) slotMousePress(event);
-}
-
-/*Move tracer 1 point left or right on keyboard arrows press and 10 points on PgUp or PgDown buttons press*/
-void PlotWindow::slotKeyPressedLeft()
-{
-    coordX-=1;
-    replot();
-}
-
-void PlotWindow::slotKeyPressedRight()
-{
-    coordX +=1;
-    replot();
-}
-void PlotWindow::slotKeyPressedPgUp()
-{
-    coordX-=10;
-    replot();
-}
-void PlotWindow::slotKeyPressedPgDown()
-{
-    coordX+=10;
-    replot();
 }
 
