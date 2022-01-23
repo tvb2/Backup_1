@@ -88,33 +88,38 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_btnCalculate_clicked()
 {
-    //Get user input and set total postlube time. Recalculate from hours and minutes into seconds
-    UserData::timer_main_sec=3600*(ui->totalPostlubeHours->text().toInt())+60*(ui->totalPostlubeMinutes->text().toInt());
+    //Get user inputs and set timer presets. Recalculate from hours and minutes into seconds
+    UserData::timer_main_sec=3600*(ui->totalPostlubeRangeHRS->text().toInt())*(ui->totalPostlubeDial->text().toFloat());
+    UserData::roll_down_timer_sec=3600*(ui->rollDownTimeRangeHRS->text().toInt())*(ui->rollDownTimeDial->text().toFloat());
+    UserData::post_lube_cont_sec=3600*(ui->postLubeContRangeHRS->text().toInt())*(ui->postLubeContDial->text().toFloat());
+    UserData::post_lube_on_cycle=60*(ui->postLubeONRangeMinutes->text().toInt())*(ui->postLubeOnDial->text().toFloat());
+    UserData::post_lube_off_cycle=60*(ui->postLubeOffRangeMin->text().toInt())*(ui->postLubeOffDial->text().toFloat());
+    UserData::header_press_high_sec=ui->headerHighRangeSec->text().toInt()*ui->headerHighDial->text().toInt();
     UserData::fireDetected=ui->ckBxFireDetected->isChecked();
     time1Fire=ui->time1Fire->text().toInt();
-    time2Fire=ui->time2Fire->text().toUInt();
+    time2Fire=ui->time2Fire->text().toInt();
 
     UserData::controllerActive=ui->ckBxControllerActive->isChecked();
 
     UserData::ps3200=ui->ckBxHeaderLo->isChecked();//checked when header pressure is low
     time1HeadPress=ui->time1Header->text().toInt();
-    time2HeadPress=ui->time2Header->text().toUInt();
+    time2HeadPress=ui->time2Header->text().toInt();
 
     //Initialize class objects (needed for 2nd 3rd... calculation
     initialize();
 
     //Backup Post Lube OFF cycle
-          kt0140.timeSet=9.5*60;         //9.5 minutes
+          kt0140.timeSet=UserData::post_lube_off_cycle;         //570 sec, 9.5 minutes
     //Backup Post lube continuous
-          kt0141.timeSet=3600;           //1 hour
+          kt0141.timeSet=UserData::post_lube_cont_sec;           //1 hour
     //Total postlube
           kt0142.timeSet=UserData::timer_main_sec; //defined by user
     //Backup Post Lube ON cycle
-          kt0143.timeSet=0.85*3*60;      //153 seconds (0.85 of 3 minutes range)
+          kt0143.timeSet=UserData::post_lube_on_cycle;      //153 seconds (0.85 of 3 minutes range)
     //Fire detected rolldown lube
-          kt0145.timeSet=0.2*1*3600;     //720 seconds (0.2 of 1 hour range)
+          kt0145.timeSet=UserData::roll_down_timer_sec;     //720 seconds (0.2 of 1 hour range)
     //Header pressure high Backup pump off
-          kt0144.timeSet=1;              //1 second
+          kt0144.timeSet=UserData::header_press_high_sec;              //1 second
     //Controller active
           ka0131.enable=UserData::controllerActive;
     //Controller active
