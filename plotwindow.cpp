@@ -4,6 +4,7 @@
 #include <TimeRelayFuncB.h>
 #include <Relay.h>
 #include "userdata.h"
+#include <QString>
 
 /*Defined in main.cpp*/
 extern ResultsData Skt0140;           //Backup Post Lube OFF cycle
@@ -47,6 +48,19 @@ PlotWindow::PlotWindow(QWidget *parent) :
     ui(new Ui::PlotWindow)
 {
     ui->setupUi(this);
+
+//Setup signals and slots to move tracer with keyboard arrows and Page Up/Down buttons
+    Left = new QShortcut (this); Left->setKey(Qt::Key_Left);
+    connect(Left, SIGNAL(activated()),this,SLOT(slotKeyPressedLeft()));
+
+    Right= new QShortcut (this); Right->setKey(Qt::Key_Right);
+    connect(Right, SIGNAL(activated()),this,SLOT(slotKeyPressedRight()));
+
+    PgUp= new QShortcut (this); PgUp->setKey(Qt::Key_PageUp);
+    connect(PgUp, SIGNAL(activated()),this,SLOT(slotKeyPressedPgUp()));
+
+    PgDown= new QShortcut (this); PgDown->setKey(Qt::Key_PageDown);
+    connect(PgDown, SIGNAL(activated()),this,SLOT(slotKeyPressedPgDown()));
 }
 
 
@@ -135,7 +149,7 @@ void PlotWindow::on_pltBtn_clicked()
             tracerFire->setStyle(QCPItemTracer::tsNone);//If you only want to use the tracer position as an anchor for other items, set style to tsNone.
             tracerFire->setGraph(ui->pltFireDetected->graph(0));
 
-    /*set up vertical line to be used for movement along the graph*/
+/*set up vertical line to be used for movement along the graph*/
     /*taken from https://evileg.com/en/post/94/*/
       verticalLineBUpump = new QCPCurve(ui->pltBUpumpRun->xAxis, ui->pltBUpumpRun->yAxis);
       verticalLineACpump = new QCPCurve(ui->pltACpumpRun->xAxis, ui->pltACpumpRun->yAxis);
@@ -158,6 +172,7 @@ void PlotWindow::on_pltBtn_clicked()
     /* creating a vector for the vertical line*/
       QVector<double> x(2) , y(2);
           x[0] = UserData::timer_main_sec/2;
+          coordX= UserData::timer_main_sec/2;
           y[0] = 0;
           x[1] = UserData::timer_main_sec/2;
           y[1] = 2;
@@ -177,11 +192,56 @@ void PlotWindow::on_pltBtn_clicked()
     ui->pltFireDetected->replot();
 
 }
-/*Function taken from https://evileg.com/en/post/94/ modiifed for several plots */
+/*Replot with new X coordinate. X coordinate will be defined in separate
+ * function depending on mouse or keyboard input */
+/*
+ Original function taken from https://evileg.com/en/post/94/
+ and modified as per my needs (see replot function for more details)
+*/
 void PlotWindow::slotMousePress(QMouseEvent *event)
 {    // Find X coordinate on the graph where the mouse being clicked
-    double coordX = ui->pltBUpumpRun->xAxis->pixelToCoord(event->pos().x());
 
+    coordX = ui->pltBUpumpRun->xAxis->pixelToCoord(event->pos().x());
+    replotAll();
+    replotAll();//shit code, but otherwise plot will always lag one step
+}
+void PlotWindow::slotMouseMove(QMouseEvent *event)
+{
+    if(QApplication::mouseButtons()) slotMousePress(event);
+}
+
+/*Move tracer 1 point left or right on keyboard arrows press and 10 points on PgUp or PgDown buttons press*/
+void PlotWindow::slotKeyPressedLeft()
+{
+    coordX-=1;
+    replotAll();
+    replotAll();//shit code, but otherwise plot will always lag one step
+}
+
+/*Move tracer 1 point left or right on keyboard arrows press and 10 points on PgUp or PgDown buttons press*/
+void PlotWindow::slotKeyPressedRight()
+{
+    coordX +=1;
+    replotAll();
+    replotAll();//shit code, but otherwise plot will always lag one step
+}
+
+/*Move tracer 1 point left or right on keyboard arrows press and 10 points on PgUp or PgDown buttons press*/
+void PlotWindow::slotKeyPressedPgUp()
+{
+    coordX-=10;
+    replotAll();
+    replotAll();//shit code, but otherwise plot will always lag one step
+}
+/*Move tracer 1 point left or right on keyboard arrows press and 10 points on PgUp or PgDown buttons press*/
+void PlotWindow::slotKeyPressedPgDown()
+{
+    coordX+=10;
+    replotAll();
+    replotAll();//shit code, but otherwise plot will always lag one step
+}
+void PlotWindow::replotAll()
+{
     // Prepare the X axis coordinates on the vertical transfer linea
     QVector<double> x(2), y(2);
     x[0] = coordX;
@@ -197,23 +257,28 @@ void PlotWindow::slotMousePress(QMouseEvent *event)
     tracerBUpump->setGraphKey(coordX); tracerACpump->setGraphKey(coordX);
     tracerHeaderPr->setGraphKey(coordX); tracerFire->setGraphKey(coordX);
 
+    //Define displayed value for each plot as a word rather than a number (only two states are
+    //possible for each plot)
+    QString BUstatus="N/A"; QString ACstatus="N/A"; QString Headstatus="N/A"; QString Firestatus="N/A";
+    tracerBUpump->position->value()==1?BUstatus="STOPPED":BUstatus="RUNNING";
+    tracerACpump->position->value()==1?ACstatus="STOPPED":ACstatus="RUNNING";
+    tracerHeaderPr->position->value()==1?Headstatus="Pressure is high":Headstatus="Pressure is low";
+    tracerFire->position->value()==1?Firestatus="Fire not detected":Firestatus="Fire detected";
+
     // Output the coordinates of the point of the graph, where the router is setted in QLineEdit
-    ui->lnBUpumpCoords->setText("x: " + QString::number(tracerBUpump->position->key()) +
-                          " y: " + QString::number(tracerBUpump->position->value()));
-    ui->lnACpumpCoords->setText("x: " + QString::number(tracerBUpump->position->key()) +
-                          " y: " + QString::number(tracerACpump->position->value()));
-    ui->lnHeaderPrCoords->setText("x: " + QString::number(tracerBUpump->position->key()) +
-                          " y: " + QString::number(tracerHeaderPr->position->value()));
-    ui->lnFireCoords->setText("x: " + QString::number(tracerBUpump->position->key()) +
-                          " y: " + QString::number(tracerFire->position->value()));
+    ui->lnBUpumpCoords->setText("time (sec): " + QString::number(tracerBUpump->position->key()) +
+                          " status: " + BUstatus);
+    ui->lnACpumpCoords->setText("time (sec): " + QString::number(tracerBUpump->position->key()) +
+                          " status: " + ACstatus);
+    ui->lnHeaderPrCoords->setText("time (sec): " + QString::number(tracerBUpump->position->key()) +
+                          " status: " + Headstatus);
+    ui->lnFireCoords->setText("time (sec): " + QString::number(tracerBUpump->position->key()) +
+                          " status: " + Firestatus);
     /*replot*/
         ui->pltBUpumpRun->replot();
         ui->pltACpumpRun->replot();
         ui->pltHeaderPressureHi->replot();
         ui->pltFireDetected->replot();
-}
-void PlotWindow::slotMouseMove(QMouseEvent *event)
-{
-    if(QApplication::mouseButtons()) slotMousePress(event);
+
 }
 

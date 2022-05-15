@@ -22,12 +22,12 @@ bool TimeRelayFuncB::ckIfDN()
       }
       if (!switchON && trigger)
       {
-        elapsed++;
         if (elapsed>=timeSet)//Relay will transfer as soon as timer is reaches preset.
         {
             status=0;
             trigger=0;
         }
+        elapsed++;
       }
       if (switchON && trigger)
       {
