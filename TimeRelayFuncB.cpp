@@ -1,4 +1,4 @@
-#include "TimeRelayFuncB.h"
+    #include "TimeRelayFuncB.h"
 TimeRelayFuncB::TimeRelayFuncB()
 {
     trigger=0;
