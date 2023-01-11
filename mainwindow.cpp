@@ -101,7 +101,8 @@ void MainWindow::on_btnCalculate_clicked()
 
     UserData::controllerActive=ui->ckBxControllerActive->isChecked();
 
-    UserData::ps3200=ui->ckBxHeaderLo->isChecked();//checked when header pressure is low
+    //checked when header pressure is low
+    UserData::ps3200=ui->ckBxHeaderLo->isChecked();
     time1HeadPress=ui->time1Header->text().toInt();
     time2HeadPress=ui->time2Header->text().toInt();
 
@@ -140,7 +141,9 @@ void MainWindow::on_btnCalculate_clicked()
           ka0138.enable=1;
     //No fire detected
           ka0244.enable=!(UserData::fireDetected);//reverse logic when KA0244 is Enabled, there is no fire detected
-timer_program_total=static_cast<int>(kt0142.timeSet*1.1);//10% more than Total Postlube
+
+    //10% more than Total Postlube
+          timer_program_total=static_cast<int>(kt0142.timeSet*1.1);
 
           /*Resize structures to be of +10% the size of Total Postlube timer */
               sizeStruct(Skt0140,timer_program_total);
@@ -175,6 +178,8 @@ for (int program_timer=0;program_timer<timer_program_total;++program_timer)
                 else
                     ka0136.enable=1;
     }else if (!UserData::ps3200) ka0136.enable=1;
+
+    //evaluate simulation
     BackupEval(program_timer);
 }
     plotWindow = new PlotWindow(this);
