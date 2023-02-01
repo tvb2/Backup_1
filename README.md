@@ -9,7 +9,7 @@
 <p>Normally, a controller would take care of postlube sequence. In case of controller failure relay-based backup system ensures postlube sequence. Controller and backup systems can have different logic of operation.</p>
 <p>The main source of information about system operation is electrical schematics which is not easy to read:</p>
 
-[typicalELS](docs/els_typical.png)
+![typicalELS](docs/els_typical.png)
 
 <p>The goal was to create an app that would simulate relay system work to allow technicians verify system operation during maintenance or troubleshooting. The program requires user to set up timer presets and configure conditions (if fire detected? is oil pressur low? etc) and also explicity set time (in seconds) when conditions starts and ends. 
 After configuration is complete, another window with graphs can be opened and a button should be clicked to calculate result. At this stage a calculation is run for each step (a step corresponds to one second of time). 
@@ -21,11 +21,11 @@ The graphs show the complete postlube cycle and allow moving the tracer to see s
         
 <p>Main window allows simulation configuration.</p>
 
-[MainW](docs/main_window_0.png)
-
+![MainW](docs/main_window_0.png)
+    
 <p>Top section is to set time relays.</p>
 
-[TimeRelaySettings](docs/main_window_time_relays_1.png)
+![TimeRelaySettings](docs/main_window_time_relays_1.png)
 
 <p>Set range of each time relay (information is project-specific and is taken from electrical schematics, units are shown to the right of text input box). Value Dial is actual setting of time relay. The value can also be found in the schematics</p>
 
